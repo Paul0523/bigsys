@@ -11,6 +11,10 @@
     <modules>
         <module>redis-util</module>
         <module>auth</module>
+        <module>user</module>
+        <module>shiro</module>
+        <module>spring</module>
+        <module>dubbo</module>
     </modules>
 
 

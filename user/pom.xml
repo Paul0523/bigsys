@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>redis-util</artifactId>
+    <artifactId>user</artifactId>
     <packaging>jar</packaging>
 
-    <name>redis-util</name>
+    <name>user</name>
     <url>http://maven.apache.org</url>
 
 
@@ -21,20 +21,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.9.0</version>
-        </dependency>
 
     </dependencies>
 
