@@ -16,8 +16,8 @@
 	<dubbo:protocol name="dubbo" port="20880" />
 
 	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service interface="com.paul.api.TestService" ref="testService" />
+	<dubbo:service interface="com.bigsys.redis.api.TestService" ref="testService" />
 
 	<!-- 具体的实现bean -->
-	<bean id="testService" class="com.paul.service.TestServiceImpl" />
+	<bean id="testService" class="com.bigsys.redis.service.TestServiceImpl" />
 </beans>
