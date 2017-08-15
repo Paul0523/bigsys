@@ -9,12 +9,13 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>redis-util</module>
-        <module>auth</module>
-        <module>user</module>
-        <module>shiro</module>
-        <module>spring</module>
-        <module>dubbo</module>
+        <module>bigsys-redis</module>
+        <module>bigsys-auth</module>
+        <module>bigsys-user</module>
+        <module>bigsys-shiro</module>
+        <module>bigsys-spring</module>
+        <module>bigsys-dubbo</module>
+        <module>bigsys-webdemo</module>
     </modules>
 
 
