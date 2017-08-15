@@ -16,6 +16,9 @@
     <bean id="userRealm" class="com.bigsys.shiro.realm.UserRealm">
     </bean>
 
+    <bean id="authc" class="com.bigsys.shiro.filter.LoginFilter">
+    </bean>
+
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm" />
@@ -23,16 +26,12 @@
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login"/>
-        <property name="successUrl" value="/login/loginSuccessFull"/>
-        <property name="unauthorizedUrl" value="/login/unauthorized"/>
+        <property name="loginUrl" value="/static/login.html"/>
+        <property name="successUrl" value="/hello"/>
+        <property name="unauthorizedUrl" value="/static/login.html"/>
         <property name="filterChainDefinitions">
             <value>
                 /home* = anon
-                / = anon
-                /logout = logout
-                /role/** = roles[admin]
-                /permission/** = perms[permssion:look]
                 /** = authc
             </value>
         </property>
