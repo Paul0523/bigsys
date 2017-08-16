@@ -16,6 +16,7 @@
         <module>bigsys-spring</module>
         <module>bigsys-dubbo</module>
         <module>bigsys-webdemo</module>
+        <module>bigsys-webdemo2</module>
     </modules>
 
 

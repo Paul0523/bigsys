@@ -11,6 +11,10 @@
     <name>bigsys-webdemo Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.jdk>1.8</project.build.jdk>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -26,5 +30,18 @@
     </dependencies>
     <build>
         <finalName>bigsys-webdemo</finalName>
+        <plugins>
+            <!--Maven编译插件 配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.maven-compiler}</version>
+                <configuration>
+                    <source>${project.build.jdk}</source>
+                    <target>${project.build.jdk}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
