@@ -19,6 +19,7 @@
         <project.build.jdk>1.8</project.build.jdk>
         <!-- 设置 Spring 的版本 -->
         <spring.vesion>4.3.10.RELEASE</spring.vesion>
+        <plugin.maven-compiler>3.1</plugin.maven-compiler>
     </properties>
 
     <dependencies>
