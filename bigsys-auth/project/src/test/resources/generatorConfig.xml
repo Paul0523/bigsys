@@ -45,7 +45,7 @@
         	<columnOverride column="recordTime" javaType="String"></columnOverride>
         </table> -->
         
-        <table tableName="bigsys_test" domainObjectName="BsTest">
+        <table tableName="bigsys_app_info" domainObjectName="AppInfo">
         </table>
        <!--<table tableName="sub_line" domainObjectName="SubLine">-->
         	<!--<property name="useActualColumnNames" value="true"/>-->
