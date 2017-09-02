@@ -10,7 +10,7 @@
     <artifactId>bigsys-user</artifactId>
     <packaging>jar</packaging>
 
-    <name>user</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
 

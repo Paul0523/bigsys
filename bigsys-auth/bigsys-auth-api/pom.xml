@@ -1,21 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
     <parent>
-        <artifactId>bigsys</artifactId>
+        <artifactId>bigsys-auth</artifactId>
         <groupId>com.bigsys</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>bigsys-auth</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>bigsys-auth-api</artifactId>
+    <packaging>jar</packaging>
     <name>${artifactId}</name>
-    <url>http://maven.apache.org</url>
-    <description>用户和应用授权中心</description>
-
-    <modules>
-        <module>bigsys-auth-api</module>
-        <module>bigsys-auth-project</module>
-    </modules>
-
 
 </project>

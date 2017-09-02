@@ -13,7 +13,7 @@
     <artifactId>bigsys-spring</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
     <properties>

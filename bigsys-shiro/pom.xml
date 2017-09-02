@@ -10,7 +10,7 @@
     <artifactId>bigsys-shiro</artifactId>
     <packaging>jar</packaging>
 
-    <name>shiro</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
     <properties>

@@ -10,7 +10,7 @@
     <artifactId>bigsys-redis</artifactId>
     <packaging>jar</packaging>
 
-    <name>redis-util</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
 

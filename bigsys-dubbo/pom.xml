@@ -10,7 +10,7 @@
     <artifactId>bigsys-dubbo</artifactId>
     <packaging>jar</packaging>
 
-    <name>dubbo</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
     <properties>

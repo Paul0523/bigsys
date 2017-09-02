@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bigsys-webdemo2</artifactId>
     <packaging>war</packaging>
-    <name>bigsys-webdemo Maven Webapp</name>
+    <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
 
     <properties>
