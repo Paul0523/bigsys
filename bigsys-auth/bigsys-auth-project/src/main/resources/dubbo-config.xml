@@ -6,17 +6,25 @@
        http://code.alibabatech.com/schema/dubbo  
        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<!--&lt;!&ndash; 提供方应用信息，用于计算依赖关系 &ndash;&gt;-->
-	<!--<dubbo:application name="test_consumer" />-->
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="bigsys-auth-project" />
 
-	<!--&lt;!&ndash; 使用zookeeper注册中心暴露服务地址 &ndash;&gt;-->
-	<!--<dubbo:registry address="zookeeper://192.168.1.65:2181" />-->
-
-	<!--&lt;!&ndash; 用dubbo协议在20880端口暴露服务 &ndash;&gt;-->
-	<!--&lt;!&ndash;dubbo:protocol name="dubbo" port="20880" /&ndash;&gt;-->
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry address="zookeeper://localhost:2181" />
 
 	<!--&lt;!&ndash; 声明需要暴露的服务接口 &ndash;&gt;-->
-	<!--<dubbo:reference interface="com.bigsys.dubbo.TestService" id="testService" check="false" />-->
+	<!--<bean id="testService" class="com.bigsys.dubbo.TestServiceImpl"/>-->
 
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol id="dubbo" name="dubbo" port="20880" />
+	<!-- 和本地bean一样实现服务 -->
+	<dubbo:service interface="com.bigsys.auth.api.AppAuth" ref="appAuth" protocol="dubbo"/>
+
+
+	<dubbo:reference interface="com.bigsys.dubbo.TestService" id="testService" check="false"/>
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol id="dubbo2" name="dubbo" port="20882" />
+    <dubbo:service interface="com.bigsys.auth.api.AppAuth" ref="appAuth" protocol="dubbo2"/>
 
 </beans>

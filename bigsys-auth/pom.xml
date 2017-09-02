@@ -12,10 +12,29 @@
     <url>http://maven.apache.org</url>
     <description>用户和应用授权中心</description>
 
+    <properties>
+        <project.build.jdk>1.8</project.build.jdk>
+    </properties>
+
     <modules>
         <module>bigsys-auth-api</module>
         <module>bigsys-auth-project</module>
     </modules>
 
+    <build>
+        <plugins>
+            <!--Maven编译插件 配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.maven-compiler}</version>
+                <configuration>
+                    <source>${project.build.jdk}</source>
+                    <target>${project.build.jdk}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
