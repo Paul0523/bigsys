@@ -16,6 +16,7 @@ import javax.annotation.Resource;
  *
  */
 @Controller
+@RequestMapping(value = "/api")
 public class MyController {
 
     @Resource
@@ -34,6 +35,11 @@ public class MyController {
 //        bsTestMapper.insert(bsTest);
         System.out.println(bsTestMapper.selectByPrimaryKey(1));
         return bsTestMapper.selectByPrimaryKey(1);
+    }
+
+    @RequestMapping(value = "hello")
+    public String hello() {
+        return "/hello";
     }
 
 }
