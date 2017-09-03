@@ -28,7 +28,7 @@ public class MyController {
     public BsTest testSay(@RequestParam(value = "name",defaultValue = "") String name){
         StringBuffer sb = new StringBuffer();
         sb.append("Dubbo: ").append("");
-        System.out.println(testService.sayHello());
+//        System.out.println(testService.sayHello());
         BsTest bsTest = new BsTest();
         bsTest.setName("呜呜呜呜无无");
 //        bsTestMapper.insert(bsTest);

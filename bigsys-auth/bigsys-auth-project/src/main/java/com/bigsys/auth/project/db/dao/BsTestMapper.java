@@ -2,8 +2,9 @@ package com.bigsys.auth.project.db.dao;
 
 import com.bigsys.auth.project.db.model.BsTest;
 import com.bigsys.auth.project.db.model.BsTestExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BsTestMapper {
     long countByExample(BsTestExample example);
