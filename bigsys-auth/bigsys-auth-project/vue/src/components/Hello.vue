@@ -21,14 +21,14 @@
 </template>
 
 <script>
-  import axios from 'axios'
+//  import axios from 'axios'
   export default {
     name: 'hello',
     mounted: function () {
-      axios.get('/api/test')
-        .then(res => {
-          console.log(res.data)
-        })
+//      axios.get('/api/test')
+//        .then(res => {
+//          console.log(res.data)
+//        })
     },
     data () {
       return {
