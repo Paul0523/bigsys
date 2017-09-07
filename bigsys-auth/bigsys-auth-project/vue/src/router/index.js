@@ -7,6 +7,8 @@ Vue.use(Router)
 /* layout */
 import Layout from '../views/layout/Layout'
 import Login from '../views/Login'
+import MyTable from '../views/components/MyTable'
+import MyTableWithFilter from '../views/components/MyTableWithFilter'
 
 /**
  * icon : the icon show in the sidebar
@@ -17,11 +19,28 @@ import Login from '../views/Login'
  **/
 export const constantRouterMap = [
   {
-    path: '/main',
+    path: '/auth',
     component: Layout,
-    name: '主页'
+    name: '用户管理',
+    children: [
+      {path: 'index', component: MyTableWithFilter, name: '主页1'}
+    ]
+  }, {
+    path: '/user',
+    component: Layout,
+    name: '权限',
+    children: [
+      {path: 'index', component: MyTable, name: '主页2'}
+    ]
   }, {
     path: '/',
+    component: Layout,
+    name: '主页',
+    children: [
+      {path: 'index', component: MyTable, name: '主页3'}
+    ]
+  }, {
+    path: '/login',
     component: Login,
     name: '登录'
   }
