@@ -1,10 +1,11 @@
 package com.bigsys.auth.project.service;
 
 import com.bigsys.auth.project.db.model.User;
-import com.github.pagehelper.Page;
+import com.bigsys.auth.project.db.model.UserExample;
+import com.bigsys.auth.project.util.service.BaseService;
 import com.github.pagehelper.PageInfo;
 
-public interface UserService {
+public interface UserService extends BaseService<String, User, UserExample, UserExample.Criteria> {
 
     void addOrUpdate(User model);
 

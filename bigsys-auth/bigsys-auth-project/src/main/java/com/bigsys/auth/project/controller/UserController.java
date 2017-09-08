@@ -2,10 +2,9 @@ package com.bigsys.auth.project.controller;
 
 import com.bigsys.auth.project.db.model.User;
 import com.bigsys.auth.project.service.UserService;
-import com.bigsys.auth.project.util.BSResponse;
+import com.bigsys.auth.project.util.response.BSResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -20,6 +19,12 @@ public class UserController {
     public BSResponse addOrUpdateUser(User model) {
         userService.addOrUpdate(model);
         return BSResponse.ok();
+    }
+
+    @RequestMapping(value = "/getById")
+    public BSResponse getById (String id) {
+        User user = userService.selectByPrimaryKey(id);
+        return BSResponse.ok(user);
     }
 
 }

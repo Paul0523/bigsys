@@ -1,4 +1,4 @@
-package com.bigsys.auth.project.util;
+package com.bigsys.auth.project.util.response;
 
 import java.util.HashMap;
 

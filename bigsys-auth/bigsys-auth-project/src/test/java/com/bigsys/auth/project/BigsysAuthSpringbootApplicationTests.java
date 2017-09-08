@@ -20,10 +20,7 @@ public class BigsysAuthSpringbootApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		PageInfo<User> page = new PageInfo<User>();
-		page.setPageNum(11);
-		page.setPageSize(10);
-	    userService.page(null, page);
-	}
+        System.out.println(userService.countByExample((example, criteria) -> {}));
+    }
 
 }
