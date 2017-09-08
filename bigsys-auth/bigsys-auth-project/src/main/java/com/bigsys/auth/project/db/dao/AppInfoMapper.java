@@ -2,9 +2,8 @@ package com.bigsys.auth.project.db.dao;
 
 import com.bigsys.auth.project.db.model.AppInfo;
 import com.bigsys.auth.project.db.model.AppInfoExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AppInfoMapper {
     long countByExample(AppInfoExample example);

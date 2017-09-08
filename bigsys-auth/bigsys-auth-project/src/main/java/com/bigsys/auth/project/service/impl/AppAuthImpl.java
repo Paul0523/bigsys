@@ -1,4 +1,4 @@
-package com.bigsys.auth.project.impl;
+package com.bigsys.auth.project.service.impl;
 
 
 import com.bigsys.auth.api.AppAuth;
