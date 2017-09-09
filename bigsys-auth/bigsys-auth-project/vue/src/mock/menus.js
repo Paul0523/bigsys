@@ -26,13 +26,18 @@ export default [
     hasSub: true,
     menus: [
       {
+        name: '角色管理',
+        link: '/sys/role',
+        hasSub: false
+      },
+      {
         name: '权限管理',
-        link: '/auth/index',
+        link: '/sys/auth',
         hasSub: false
       },
       {
         name: '用户管理',
-        link: '/user/index',
+        link: '/sys/user',
         hasSub: false
       }
     ]

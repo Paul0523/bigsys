@@ -20,7 +20,12 @@ public class BigsysAuthSpringbootApplicationTests {
 
 	@Test
 	public void contextLoads() {
-        System.out.println(userService.countByExample((example, criteria) -> {}));
+	    for (int i = 0; i < 100; i++) {
+	        User user = new User();
+	        user.setName("jkakdf");
+	        user.setPhone("faskdjfa");
+	        userService.addOrUpdate(user);
+        }
     }
 
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl extends BaseServiceImpl<String, User, UserExample, 
             model.setUpdateTime(new Date());
             userMapper.insert(model);
         } else {
-            userMapper.updateByPrimaryKey(model);
+            userMapper.updateByPrimaryKeySelective(model);
         }
     }
 

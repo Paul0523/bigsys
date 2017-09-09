@@ -1,11 +1,18 @@
 package com.bigsys.auth.project.config;
 
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,6 +21,10 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+
+    @Resource
+    private Realm myRealm;
+
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。
      * 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -33,12 +44,13 @@ public class ShiroConfig {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/login.html");
         // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        shiroFilterFactoryBean.setSuccessUrl("/loginRes");
         // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        filterChainDefinitionMap.put("/hello", "anon");
         filterChainDefinitionMap.put("/**", "anon");
 //        // 配置不会被拦截的链接 顺序判断
 //        filterChainDefinitionMap.put("/static/**", "anon");
@@ -62,8 +74,18 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
-//        securityManager.setRealm(myShiroRealm());
+        securityManager.setRealm(myRealm);
         return securityManager;
+    }
+
+    @Bean
+    public FormAuthenticationFilter authc() {
+        return new FormAuthenticationFilter() {
+            @Override
+            protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+                return false;
+            }
+        };
     }
 
 //    /**

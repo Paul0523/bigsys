@@ -31,7 +31,7 @@ module.exports = {
       "/api": {
         target: "http://localhost:9003",
         pathRewrite: {
-          "/api": "/bigsys-auth/api"
+          "/api": "/bigsys-auth"
         }
       }
     },
