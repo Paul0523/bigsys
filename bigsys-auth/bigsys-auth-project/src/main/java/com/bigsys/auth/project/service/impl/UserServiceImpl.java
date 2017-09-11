@@ -12,6 +12,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<String, User, UserExample, UserExample.Criteria> implements UserService {
@@ -52,6 +53,13 @@ public class UserServiceImpl extends BaseServiceImpl<String, User, UserExample, 
         return pager;
     }
 
+    @Override
+    public User getUser(String username) {
+        List<User> users = selectByExample((a, b) -> {
+            b.andNameLike(username);
+        });
+        return users.get(0);
+    }
 
 
 }

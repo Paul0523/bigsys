@@ -13,7 +13,6 @@
       </el-form-item>
 
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-
       <div class='tips'>账号:admin 密码随便填</div>
       <div class='tips'>账号:editor  密码随便填</div>
 
@@ -59,7 +58,11 @@
             this.loading = true
             this.$store.dispatch('LOGIN', this.loginForm).then(() => {
               this.loading = false
-              this.$router.push({ path: '/sys/user' })
+              this.$store.dispatch('GET_MENUS').then(() => {
+                this.$router.push({ path: '/sys/user' })
+              }).catch((error) => {
+                console.log(error)
+              })
               // this.showDialog = true
             }).catch(() => {
               this.loading = false

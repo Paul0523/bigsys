@@ -1,5 +1,5 @@
 const getters = {
-  menus: state => state.sidebar.menus,
-  users: state => state.users.users
+  menus: state => state.menus,
+  users: state => state.users
 }
 export default getters

@@ -11,4 +11,5 @@ public interface UserService extends BaseService<String, User, UserExample, User
 
     PageInfo<User> page(User condition, PageInfo<User> pager);
 
+    User getUser(String username);
 }

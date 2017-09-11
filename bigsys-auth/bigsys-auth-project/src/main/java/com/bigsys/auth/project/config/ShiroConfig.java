@@ -1,5 +1,9 @@
 package com.bigsys.auth.project.config;
 
+import com.bigsys.auth.project.db.model.User;
+import com.bigsys.auth.project.util.response.BSResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -13,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -83,6 +89,13 @@ public class ShiroConfig {
         return new FormAuthenticationFilter() {
             @Override
             protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("utf-8");
+                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                BSResponse bsResponse = BSResponse.ok(user);
+                response.setContentLength(new ObjectMapper().writeValueAsString(bsResponse).getBytes("utf-8").length);
+                OutputStream outputStream = response.getOutputStream();
+                outputStream.write(new ObjectMapper().writeValueAsString(bsResponse).getBytes("utf-8"));
                 return false;
             }
         };

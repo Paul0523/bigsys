@@ -45,9 +45,12 @@
         	<columnOverride column="recordTime" javaType="String"></columnOverride>
         </table> -->
 
-        <table tableName="bigsys_app_info" domainObjectName="AppInfo">
-        </table>
-        <table tableName="bigsys_user" domainObjectName="User">
+        <!--<table tableName="bigsys_app_info" domainObjectName="AppInfo">-->
+        <!--</table>-->
+        <!--<table tableName="bigsys_user" domainObjectName="User">-->
+            <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
+        <table tableName="bigsys_role_menu" domainObjectName="RoleMenu">
             <property name="useActualColumnNames" value="true"/>
         </table>
         <!--<table tableName="sub_line" domainObjectName="SubLine">-->

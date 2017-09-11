@@ -9,6 +9,7 @@ import Layout from '../views/layout/Layout'
 import Login from '../views/Login'
 import MyTable from '../views/components/MyTable'
 import user from '../views/pages/user'
+import role from '../views/pages/role'
 import error404 from '../views/pages/404'
 
 /**
@@ -20,14 +21,6 @@ import error404 from '../views/pages/404'
  **/
 export const constantRouterMap = [
   {
-    path: '/sys',
-    component: Layout,
-    name: '权限管理',
-    redirect: '/404',
-    children: [
-      {path: 'auth', component: MyTable, name: '主页1'}
-    ]
-  }, {
     path: '/sys',
     component: Layout,
     redirect: '/404',
@@ -49,7 +42,7 @@ export const constantRouterMap = [
     redirect: '/404',
     name: '角色',
     children: [
-      {path: 'role', component: MyTable, name: '主页3'}
+      {path: 'role', component: role, name: '主页3'}
     ]
   }, {
     path: '/404',

@@ -54,14 +54,44 @@
       <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
         <el-input v-model="formLabelAlign.id" type="hidden"></el-input>
         <el-form-item label="用户名">
+          <el-input v-model="formLabelAlign.username"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
           <el-input v-model="formLabelAlign.name"></el-input>
         </el-form-item>
         <el-form-item label="电话">
           <el-input v-model="formLabelAlign.phone" @keyup.enter.native="saveUser"></el-input>
         </el-form-item>
+        <el-form-item label="角色">
+          <el-select v-model="formLabelAlign.roleId" @click.native="selectRole" multiple placeholder="请选择">
+            <el-option style="display: none"
+                       v-for="item in options"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveUser()">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="选择角色" :visible.sync="dialogRoleVisible">
+      <el-tree
+        :data="role"
+        :props="roleProps"
+        show-checkbox
+        :check-strictly="true"
+        @check-change="addRole"
+        node-key="id"
+        ref="role"
+        default-expand-all
+        :expand-on-click-node="false">
+      </el-tree>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogRoleVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveUser()">确 定</el-button>
       </div>
     </el-dialog>
@@ -79,12 +109,24 @@
 </style>
 
 <script>
+  import ElButton from '../../../node_modules/element-ui/packages/button/src/button'
+  import axios from 'axios'
+  import ElFormItem from '../../../node_modules/element-ui/packages/form/src/form-item'
   export default {
+    components: {
+      ElFormItem,
+      ElButton},
     created () {
       this.initData()
     },
+    computed: {
+      lineRole () {
+        return this.formLabelAlign.role
+      }
+    },
     data () {
       return {
+        options: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
@@ -93,15 +135,53 @@
         phone: '',
         title: '新增用户',
         dialogFormVisible: false,
+        dialogRoleVisible: false,
         labelPosition: 'right',
+        roleProps: {
+          label: 'name',
+          children: 'roles'
+        },
+        role: [],
         formLabelAlign: {
           id: '',
+          username: '',
           name: '',
-          phone: ''
+          phone: '',
+          roleId: []
         }
       }
     },
     methods: {
+      addRole (data, isCheck, subDatas) {
+        console.log(subDatas)
+//        checkParentIsCheck(data)
+//        checkChildrenIsCheck(data)
+        if (isCheck) {
+          this.formLabelAlign.roleId.push(data.id)
+        } else {
+          this.formLabelAlign.roleId.remove(data.id)
+        }
+      },
+      selectRole () {
+        axios.get('/api/role/getRole').then((response) => {
+          this.role = response.data.data
+          this.options = []
+          var addOptions = (role) => {
+            role.forEach((item) => {
+              this.options.push({label: item.name, value: item.id})
+              if (item.roles.length > 0) {
+                addOptions(item.roles)
+              }
+            })
+          }
+          addOptions(this.role)
+          console.log(this.options)
+          this.dialogRoleVisible = true
+          setTimeout(() => {
+            this.$refs.role.setCheckedKeys(this.formLabelAlign.roleId)
+          })
+        })
+      },
       initData () {
         console.log('初始化数据中。。。')
         this.pageNum = 1
@@ -130,15 +210,19 @@
       addUser () {
         this.title = '新增用户'
         this.formLabelAlign.id = ''
+        this.formLabelAlign.username = ''
         this.formLabelAlign.name = ''
         this.formLabelAlign.phone = ''
+        this.formLabelAlign.roleId = []
         this.dialogFormVisible = true
       },
       modifyUser: function (user) {
         this.title = '修改用户'
         this.formLabelAlign.id = user.id
+        this.formLabelAlign.username = user.username
         this.formLabelAlign.name = user.name
         this.formLabelAlign.phone = user.phone
+        this.formLabelAlign.roleId = user.roleId
         this.dialogFormVisible = true
       },
       deleteUser (id) {

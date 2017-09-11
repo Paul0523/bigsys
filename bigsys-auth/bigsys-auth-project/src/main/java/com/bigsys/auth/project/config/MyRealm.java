@@ -1,5 +1,7 @@
 package com.bigsys.auth.project.config;
 
+import com.bigsys.auth.project.db.model.User;
+import com.bigsys.auth.project.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,6 +17,9 @@ import javax.annotation.Resource;
 @Component("myRealm")
 public class MyRealm extends AuthorizingRealm{
 
+    @Resource
+    private UserService userService;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;
@@ -22,7 +27,8 @@ public class MyRealm extends AuthorizingRealm{
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getCredentials(), this.getClass().getName());
+        User user = userService.getUser((String) authenticationToken.getPrincipal());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, authenticationToken.getCredentials(), this.getClass().getName());
         return info;
     }
 }

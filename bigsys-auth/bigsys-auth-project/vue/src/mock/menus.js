@@ -6,19 +6,22 @@ export default [
       {
         name: 'bb',
         link: '/index',
-        hasSub: false
+        hasSub: false,
+        menus: []
       }
     ]
   },
   {
     name: 'aa',
     link: '/',
-    hasSub: false
+    hasSub: false,
+    menus: []
   },
   {
     name: 'aa',
     link: '/',
-    hasSub: false
+    hasSub: false,
+    menus: []
   },
   {
     name: '系统管理',
@@ -28,17 +31,14 @@ export default [
       {
         name: '角色管理',
         link: '/sys/role',
-        hasSub: false
-      },
-      {
-        name: '权限管理',
-        link: '/sys/auth',
-        hasSub: false
+        hasSub: false,
+        menus: []
       },
       {
         name: '用户管理',
         link: '/sys/user',
-        hasSub: false
+        hasSub: false,
+        menus: []
       }
     ]
   }
