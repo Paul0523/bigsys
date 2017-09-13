@@ -1,11 +1,16 @@
 package com.bigsys.auth.project.db.model;
 
+import com.bigsys.auth.project.service.WrapperRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class User {
+public class User implements WrapperRole{
     private String id;
+
+    private String username;
 
     private String name;
 
@@ -19,12 +24,22 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
+    private List<String> roleIds = new ArrayList<>();
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
     public String getName() {
@@ -65,5 +80,13 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 }

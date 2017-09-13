@@ -51,6 +51,20 @@ public class RoleServiceImpl extends BaseServiceImpl<String, Role, RoleExample, 
         doDeleteRole(id);
     }
 
+    @Override
+    public List<Role> getSubRoles(String roleId) {
+        List<Role> roles = new ArrayList<>();
+        roles = selectByExample((a, b) -> {
+            b.andParentIdEqualTo(roleId);
+        });
+        List<Role> subSubRoles = new ArrayList<>();
+        for (Role role : roles) {
+            subSubRoles.addAll(getSubRoles(role.getId()));
+        }
+        roles.addAll(subSubRoles);
+        return roles;
+    }
+
     private void doDeleteRole(String id) {
         List<Role> subRoles = selectByExample((a, b) -> {
             b.andParentIdEqualTo(id);

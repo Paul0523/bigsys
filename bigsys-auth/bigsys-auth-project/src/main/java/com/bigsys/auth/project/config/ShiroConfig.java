@@ -4,21 +4,28 @@ import com.bigsys.auth.project.db.model.User;
 import com.bigsys.auth.project.util.response.BSResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
+import javax.servlet.Filter;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -44,6 +51,8 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
+        shiroFilterFactoryBean.setFilters(getMyFilters());
+
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
@@ -57,7 +66,7 @@ public class ShiroConfig {
         // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/hello", "anon");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
 //        // 配置不会被拦截的链接 顺序判断
 //        filterChainDefinitionMap.put("/static/**", "anon");
 //        filterChainDefinitionMap.put("/ajaxLogin", "anon");
@@ -76,17 +85,46 @@ public class ShiroConfig {
         return shiroFilterFactoryBean;
     }
 
-    @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        // 设置realm.
-        securityManager.setRealm(myRealm);
-        return securityManager;
-    }
+    private Map<String, Filter> getMyFilters() {
+        Map<String, Filter> filters = new HashMap<>();
+        filters.put("authc", new FormAuthenticationFilter() {
 
-    @Bean
-    public FormAuthenticationFilter authc() {
-        return new FormAuthenticationFilter() {
+            @Override
+            protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+                if (isLoginRequest(request, response)) {
+                    if (isLoginSubmission(request, response)) {
+                        return executeLogin(request, response);
+                    } else {
+                        //allow them to see the login page ;)
+                        return true;
+                    }
+                } else {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    BSResponse bsResponse = BSResponse.needLogin("您已经退出，请重新登录。");
+                    OutputStream outputStream = null;
+                    outputStream = response.getOutputStream();
+                    outputStream.write(new ObjectMapper().writeValueAsString(bsResponse).getBytes("utf-8"));
+                    return false;
+                }
+            }
+
+            @Override
+            protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+                try {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    BSResponse bsResponse = BSResponse.error(e.getMessage());
+                    OutputStream outputStream = null;
+                    outputStream = response.getOutputStream();
+                    outputStream.write(new ObjectMapper().writeValueAsString(bsResponse).getBytes("utf-8"));
+                    return false;
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                return false;
+            }
+
             @Override
             protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
                 response.setContentType("application/json");
@@ -98,8 +136,31 @@ public class ShiroConfig {
                 outputStream.write(new ObjectMapper().writeValueAsString(bsResponse).getBytes("utf-8"));
                 return false;
             }
-        };
+        });
+
+        return filters;
     }
+
+    @Bean
+    public SecurityManager securityManager(SessionManager sessionManager) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setSessionManager(sessionManager);
+        // 设置realm.
+        securityManager.setRealm(myRealm);
+        return securityManager;
+    }
+
+    @Bean
+    public SessionManager sessionManager() {
+        Cookie sessionIdCookie = new SimpleCookie();
+        sessionIdCookie.setName("MySessionId");
+        sessionIdCookie.setHttpOnly(false);
+        sessionIdCookie.setPath("/");
+        DefaultWebSessionManager manager = new DefaultWebSessionManager();
+        manager.setSessionIdCookie(sessionIdCookie);
+        return manager;
+    }
+
 
 //    /**
 //     * 身份认证realm; (这个需要自己写，账号密码校验；权限等)

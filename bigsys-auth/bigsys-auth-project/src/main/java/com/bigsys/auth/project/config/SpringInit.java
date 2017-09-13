@@ -1,5 +1,6 @@
 package com.bigsys.auth.project.config;
 
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -27,6 +28,14 @@ public class SpringInit implements ApplicationContextAware{
             entry.getValue().setSupportedMethods("GET", "POST");
         }
 
+    }
+
+    @PostConstruct
+    public void test() {
+        Map<String, FormAuthenticationFilter> beans = applicationContext.getBeansOfType(FormAuthenticationFilter.class);
+        for (Map.Entry<String, FormAuthenticationFilter> stringFormAuthenticationFilterEntry : beans.entrySet()) {
+            System.out.println(stringFormAuthenticationFilterEntry.getKey() + stringFormAuthenticationFilterEntry.getValue().getClass().getName());
+        }
     }
 
     @Override

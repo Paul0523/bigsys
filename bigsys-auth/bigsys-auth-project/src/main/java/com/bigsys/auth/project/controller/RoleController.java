@@ -51,4 +51,9 @@ public class RoleController {
         return BSResponse.ok(links);
     }
 
+    @RequestMapping(value = "/getSubRoles")
+    public BSResponse getSubRoles(String roleId) {
+        List<Role> roles = roleService.getSubRoles(roleId);
+        return BSResponse.ok(roles);
+    }
 }

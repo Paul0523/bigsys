@@ -10,7 +10,6 @@
       :expand-on-click-node="false"
       :render-content="renderContent">
     </el-tree>
-    <el-button @click="getCheckedNodes">测试</el-button>
     <el-dialog
       title="编辑角色访问权限"
       :visible.sync="dialogVisible"

@@ -16,8 +16,12 @@
       :data="tdata"
       stripe
       style="width: 100%">
-      <el-table-column prop="name"
+      <el-table-column prop="username"
                        label="用户名"
+                       :width="100">
+      </el-table-column>
+      <el-table-column prop="name"
+                       label="昵称"
                        :width="180">
       </el-table-column>
       <el-table-column prop="phone"
@@ -63,12 +67,12 @@
           <el-input v-model="formLabelAlign.phone" @keyup.enter.native="saveUser"></el-input>
         </el-form-item>
         <el-form-item label="角色">
-          <el-select v-model="formLabelAlign.roleId" @click.native="selectRole" multiple placeholder="请选择">
+          <el-select v-model="formLabelAlign.roleIds" @visible-change="selectRole" multiple placeholder="请选择">
             <el-option style="display: none"
                        v-for="item in options"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
+                       :key="item.id"
+                       :label="item.name"
+                       :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -92,7 +96,7 @@
       </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogRoleVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveUser()">确 定</el-button>
+        <el-button type="primary" @click="dialogRoleVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -147,40 +151,66 @@
           username: '',
           name: '',
           phone: '',
-          roleId: []
+          roleIds: []
         }
       }
     },
     methods: {
-      addRole (data, isCheck, subDatas) {
-        console.log(subDatas)
-//        checkParentIsCheck(data)
-//        checkChildrenIsCheck(data)
-        if (isCheck) {
-          this.formLabelAlign.roleId.push(data.id)
+      checkParentIsCheck (data) {
+        var roleMap = {}
+        this.options.forEach((option) => {
+          roleMap[option.id] = option
+        })
+        if (this.formLabelAlign.roleIds.indexOf(data.parentId) !== -1) {
+          return true
         } else {
-          this.formLabelAlign.roleId.remove(data.id)
+          if (data.parentId) {
+            return this.checkParentIsCheck(roleMap[data.parentId])
+          } else {
+            return false
+          }
         }
       },
-      selectRole () {
-        axios.get('/api/role/getRole').then((response) => {
-          this.role = response.data.data
-          this.options = []
-          var addOptions = (role) => {
-            role.forEach((item) => {
-              this.options.push({label: item.name, value: item.id})
-              if (item.roles.length > 0) {
-                addOptions(item.roles)
-              }
-            })
+      checkChildrenIsCheck (data) {
+        var roleMap = {}
+        this.options.forEach((option) => {
+          roleMap[option.id] = option
+        })
+        for (let i = 0; i < data.roles.length; i++) {
+          var subRole = data.roles[i]
+          if (this.formLabelAlign.roleIds.indexOf(subRole.id) !== -1) {
+            return true
           }
-          addOptions(this.role)
-          console.log(this.options)
+          if (subRole.roles.length > 0 && this.checkChildrenIsCheck(subRole)) {
+            return true
+          }
+        }
+        return false
+      },
+      addRole (data, isCheck, subDatas) {
+        console.log(subDatas)
+        if ((this.checkParentIsCheck(data) || this.checkChildrenIsCheck(data)) && isCheck) {
+          alert('有父角色或子角色已被选中，若要添加当前角色请取消其他选中角色')
+          setTimeout(() => {
+            var keys = this.$refs.role.getCheckedKeys()
+            keys.remove(data.id)
+            this.$refs.role.setCheckedKeys(keys)
+          })
+          return
+        }
+        if (isCheck) {
+          this.formLabelAlign.roleIds.push(data.id)
+        } else {
+          this.formLabelAlign.roleIds.remove(data.id)
+        }
+      },
+      selectRole (isDown) {
+        if (isDown) {
           this.dialogRoleVisible = true
           setTimeout(() => {
-            this.$refs.role.setCheckedKeys(this.formLabelAlign.roleId)
+            this.$refs.role.setCheckedKeys(this.formLabelAlign.roleIds)
           })
-        })
+        }
       },
       initData () {
         console.log('初始化数据中。。。')
@@ -213,8 +243,22 @@
         this.formLabelAlign.username = ''
         this.formLabelAlign.name = ''
         this.formLabelAlign.phone = ''
-        this.formLabelAlign.roleId = []
+        this.formLabelAlign.roleIds = []
         this.dialogFormVisible = true
+        axios.get('/api/role/getRole').then((response) => {
+          this.role = response.data.data
+          this.options = []
+          var addOptions = (role) => {
+            role.forEach((item) => {
+              this.options.push(item)
+              if (item.roles.length > 0) {
+                addOptions(item.roles)
+              }
+            })
+          }
+          addOptions(this.role)
+          console.log(this.options)
+        })
       },
       modifyUser: function (user) {
         this.title = '修改用户'
@@ -222,8 +266,22 @@
         this.formLabelAlign.username = user.username
         this.formLabelAlign.name = user.name
         this.formLabelAlign.phone = user.phone
-        this.formLabelAlign.roleId = user.roleId
+        this.formLabelAlign.roleIds = user.roleIds
         this.dialogFormVisible = true
+        axios.get('/api/role/getRole').then((response) => {
+          this.role = response.data.data
+          this.options = []
+          var addOptions = (role) => {
+            role.forEach((item) => {
+              this.options.push(item)
+              if (item.roles.length > 0) {
+                addOptions(item.roles)
+              }
+            })
+          }
+          addOptions(this.role)
+          console.log(this.options)
+        })
       },
       deleteUser (id) {
         this.$store.dispatch('DELETE_USER', id).then((response) => {

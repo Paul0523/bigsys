@@ -3,6 +3,7 @@
 <mapper namespace="com.bigsys.auth.project.db.dao.UserMapper">
   <resultMap id="BaseResultMap" type="com.bigsys.auth.project.db.model.User">
     <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="passward" jdbcType="VARCHAR" property="passward" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, passward, phone, createTime, updateTime
+    id, username, name, passward, phone, createTime, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.bigsys.auth.project.db.model.UserExample" resultMap="BaseResultMap">
     select
@@ -101,18 +102,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bigsys.auth.project.db.model.User">
-    insert into bigsys_user (id, name, passward, 
-      phone, createTime, updateTime
-      )
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{passward,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+    insert into bigsys_user (id, username, name, 
+      passward, phone, createTime, 
+      updateTime)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{passward,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.bigsys.auth.project.db.model.User">
     insert into bigsys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="username != null">
+        username,
       </if>
       <if test="name != null">
         name,
@@ -133,6 +137,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -163,6 +170,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -186,6 +196,7 @@
   <update id="updateByExample" parameterType="map">
     update bigsys_user
     set id = #{record.id,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       passward = #{record.passward,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
@@ -198,6 +209,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.bigsys.auth.project.db.model.User">
     update bigsys_user
     <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -218,7 +232,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bigsys.auth.project.db.model.User">
     update bigsys_user
-    set name = #{name,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       passward = #{passward,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},

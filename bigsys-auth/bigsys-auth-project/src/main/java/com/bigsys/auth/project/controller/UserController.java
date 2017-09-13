@@ -40,15 +40,7 @@ public class UserController {
 
     @RequestMapping(value = "/page")
     public PageInfo<User> page (User model, PageInfo<User> page) {
-        return userService.selectByExampleAndPage(page, (example, criteria) -> {
-            if (!StringUtils.isEmpty(model.getName())) {
-                criteria.andNameLike("%" + model.getName() + "%");
-            }
-            if (!StringUtils.isEmpty(model.getPhone())) {
-                criteria.andPhoneLike("%" + model.getPhone() + "%");
-            }
-            example.setOrderByClause("updateTime desc");
-        });
+        return userService.page(model, page);
     }
 
 }

@@ -50,9 +50,12 @@
         <!--<table tableName="bigsys_user" domainObjectName="User">-->
             <!--<property name="useActualColumnNames" value="true"/>-->
         <!--</table>-->
-        <table tableName="bigsys_role_menu" domainObjectName="RoleMenu">
+        <table tableName="bigsys_user_role" domainObjectName="UserRole">
             <property name="useActualColumnNames" value="true"/>
         </table>
+        <!--<table tableName="bigsys_role_menu" domainObjectName="RoleMenu">-->
+            <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
         <!--<table tableName="sub_line" domainObjectName="SubLine">-->
         <!--<property name="useActualColumnNames" value="true"/>-->
         <!--<columnOverride column="createTime" javaType="String"></columnOverride>-->

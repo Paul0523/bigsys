@@ -18,4 +18,11 @@ public interface RoleService extends BaseService<String, Role, RoleExample, Role
      * @param id
      */
     void deleteRole(String id);
+
+    /**
+     * 获取给定roleId下面的所有子角色
+     * @param roleId
+     * @return
+     */
+    List<Role> getSubRoles(String roleId);
 }
