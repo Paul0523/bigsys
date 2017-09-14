@@ -21,13 +21,50 @@
 
 <script>
   import SidebarItem from './SidebarItem'
-  import { mapGetters } from 'vuex'
+  import axios from 'axios'
+  import menus from '../../mock/menus'
+  var id = 10000
   export default {
     components: {
       SidebarItem
     },
     created () {
       this.$store.dispatch('GET_MENUS')
+      axios.get('/api/menu/getMenus').then((response) => {
+        if (response.data.data === 'all') {
+          this.menus = menus
+        } else {
+          var hit = (resmenu, link) => {
+            for (let i = 0; i < resmenu.length; i++) {
+              if (link === resmenu[i]) {
+                return true
+              }
+            }
+            return false
+          }
+          var solveMenu = (copymenu, menus, resmenu) => {
+            menus.forEach((menu) => {
+              var newmenu = {}
+              newmenu.id = id++
+              newmenu.link = menu.link
+              newmenu.name = menu.name
+              newmenu.hasSub = menu.hasSub
+              if (!menu.hasSub && hit(resmenu, menu.link)) {
+                copymenu.push(newmenu)
+              } else if (menu.hasSub) {
+                newmenu.menus = []
+                solveMenu(newmenu.menus, menu.menus, resmenu)
+                if (newmenu.menus.length > 0) {
+                  copymenu.push(newmenu)
+                }
+              }
+            })
+          }
+          var copymenu = []
+          solveMenu(copymenu, menus, response.data.data)
+          this.menus = copymenu
+        }
+      })
     },
     methods: {
       handleOpen (key, keyPath) {
@@ -35,10 +72,15 @@
       },
       handleClose (key, keyPath) {
         console.log(key, keyPath)
+      },
+      filter (resMenus, menus) {
+
       }
     },
-    computed: {
-      ...mapGetters(['menus'])
+    data () {
+      return {
+        menus: menus
+      }
     }
   }
 </script>

@@ -51,4 +51,14 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<Integer, RoleMenu, Role
                 .collect(Collectors.toList());
         return menus;
     }
+
+    @Override
+    public List<String> getRoleMenus(List<String> roleIds) {
+        List<RoleMenu> roleMenus = selectByExample((a, b) -> {
+            b.andRoleIn(roleIds);
+        });
+        return roleMenus.stream()
+                .map(roleMenu -> roleMenu.getMenu())
+                .distinct().collect(Collectors.toList());
+    }
 }

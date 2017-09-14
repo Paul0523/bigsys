@@ -1,13 +1,17 @@
 package com.bigsys.auth.project.controller;
 
-import com.bigsys.auth.project.model.Menu;
+import com.bigsys.auth.project.db.model.User;
+import com.bigsys.auth.project.service.RoleMenuService;
+import com.bigsys.auth.project.service.RoleService;
+import com.bigsys.auth.project.service.UserRoleService;
+import com.bigsys.auth.project.service.WrapperRole;
 import com.bigsys.auth.project.util.response.BSResponse;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +19,19 @@ import java.util.List;
 @RequestMapping(value = "/menu")
 public class MenuController {
 
-    String menu = "[{\"name\":\"aa\",\"hasSub\":true,\"menus\":[{\"name\":\"bb\",\"link\":\"/index\",\"hasSub\":false}]},{\"name\":\"aa\",\"link\":\"/\",\"hasSub\":false},{\"name\":\"aa\",\"link\":\"/\",\"hasSub\":false},{\"name\":\"系统管理\",\"link\":\"/\",\"hasSub\":true,\"menus\":[{\"name\":\"角色管理\",\"link\":\"/role/index\",\"hasSub\":false},{\"name\":\"权限管理\",\"link\":\"/auth/index\",\"hasSub\":false},{\"name\":\"用户管理\",\"link\":\"/user/index\",\"hasSub\":false},{\"name\":\"菜单管理\",\"link\":\"/user/index\",\"hasSub\":false}]}]";
+    @Resource
+    private RoleMenuService roleMenuService;
+    @Resource
+    private UserRoleService userRoleService;
 
     @RequestMapping(value = "/getMenus")
-    public BSResponse getMenus(String userId) {
-        JavaType javaType = new ObjectMapper().getTypeFactory().constructParametricType(ArrayList.class, Menu.class);
-        List<Menu> menus = null;
-        try {
-            menus = new ObjectMapper().readValue(menu, javaType);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public BSResponse getMenus() {
+        User curUser = (User) SecurityUtils.getSubject().getPrincipal();
+        userRoleService.wrapperRoles(Lists.newArrayList(curUser));
+        if (curUser.getRoleIds().contains("admin")) {
+            return BSResponse.ok("all");
         }
+        List<String> menus = roleMenuService.getRoleMenus(curUser.getRoleIds());
         return BSResponse.ok(menus);
     }
 

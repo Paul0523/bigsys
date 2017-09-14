@@ -11,4 +11,6 @@ public interface RoleMenuService extends BaseService<Integer, RoleMenu, RoleMenu
     void addRoleMenus(RoleMenus roleMenus);
 
     List<String> getRoleMenus(String role);
+
+    List<String> getRoleMenus(List<String> roleIds);
 }

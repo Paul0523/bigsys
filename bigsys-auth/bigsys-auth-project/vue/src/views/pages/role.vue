@@ -94,6 +94,7 @@
           }
         })
       }
+      addId(menus)
     },
     methods: {
       getCheckedNodes () {
@@ -157,11 +158,6 @@
                   return
                 }
                 that.curData = data
-                if (data.parentId === 'admin') {
-                  that.data3 = menus
-                  that.dialogVisible = true
-                  return
-                }
                 var roleMenus = axios.get('/api/role/getRoleMenus?role=' + data.parentId)
                 var authedMenus = axios.get('/api/role/getRoleMenus?role=' + data.id)
                 axios.all([roleMenus, authedMenus]).then((response) => {
@@ -193,7 +189,6 @@
                   }
 
                   var solveCheckedMenu = (copymenu, ids, checkedMenu) => {
-                    console.log(copymenu)
                     copymenu.forEach((menu) => {
                       if (!menu.hasSub && hit(checkedMenu, menu.link)) {
                         ids.push(menu.id)
@@ -203,12 +198,13 @@
                     })
                   }
                   var resmenu = response[0].data.data
-                  if (data.parentId === 'admin') {
-                    resmenu = menus
-                  }
                   var copymenu = []
                   solveMenu(copymenu, menus, resmenu)
                   that.data3 = copymenu
+                  if (data.parentId === 'admin') {
+                    that.data3 = menus
+                    copymenu = menus
+                  }
                   var ids = []
                   var checkedMenu = response[1].data.data
                   solveCheckedMenu(copymenu, ids, checkedMenu)

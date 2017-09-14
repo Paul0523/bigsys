@@ -1,27 +1,8 @@
 export default [
   {
-    name: 'aa',
-    hasSub: true,
-    menus: [
-      {
-        name: 'bb',
-        link: '/index',
-        hasSub: false,
-        menus: []
-      }
-    ]
-  },
-  {
-    name: 'aa',
-    link: '/',
-    hasSub: false,
-    menus: []
-  },
-  {
-    name: 'aa',
-    link: '/',
-    hasSub: false,
-    menus: []
+    name: '测试菜单',
+    link: '/test',
+    hasSub: false
   },
   {
     name: '系统管理',

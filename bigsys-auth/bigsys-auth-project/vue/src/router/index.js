@@ -21,6 +21,14 @@ import error404 from '../views/pages/404'
  **/
 export const constantRouterMap = [
   {
+    path: '/',
+    component: Layout,
+    redirect: '/404',
+    name: '测试页面',
+    children: [
+      {path: 'test', component: user, name: '主页2'}
+    ]
+  }, {
     path: '/sys',
     component: Layout,
     redirect: '/404',
